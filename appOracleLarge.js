@@ -85,7 +85,7 @@ function GetEachPageInformation(arrPages)
 			
 			if (!error && response.statusCode == 200) {
 				GetOrderInformation(htmlBody);
-				console.log( requestBody + "success link " + objPage.PageLink);
+				//console.log( requestBody + "success link " + objPage.PageLink);
 			}
 			else {
 				console.log(requestBody + "We have encountered an error: " + error + " LINK:" + objPage.PageLink);
