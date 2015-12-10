@@ -4,6 +4,7 @@ var request = require("request");
 var cheerio = require("cheerio");
 var oracledb = require('oracledb');
 var sleep = require('sleep');
+var separateReqPool = {maxSockets: 10};
 
 //Initialise database test
 /*oracledb.getConnection(
@@ -80,7 +81,7 @@ function GetEachPageInformation(arrPages)
 	arrPages.forEach(function (objPage) {
 		//console.log( (noOfFileRead++) + " File request:"+ objPage.PageLink);
 			
-		request(objPage.PageLink, function (error, response, htmlBody) {
+		request({url: objPage.PageLink, pool: separateReqPool}, function (error, response, htmlBody) {
 			requestBody ++;
 			
 			if (!error && response.statusCode == 200) {
@@ -170,12 +171,12 @@ function GetOrderInformation(htmlBody)
     if(qryProducts !='')
 	 {
 		noOfFileSaved ++;
-		if(noOfFileSaved % 50 ==0) 
+		/*if(noOfFileSaved % 100 ==0) 
 		{
 		 console.log("GN: DB Save function");
 		 sleep.sleep(2);
 		 console.log("GM: DB Save function");
-		}
+		}*/
 	
 		//Insert record into database
 		oracledb.getConnection(
@@ -197,7 +198,7 @@ function GetOrderInformation(htmlBody)
 						 doRelease(connection);
 						 return;
 					 }
-					 console.log("Rows inserted: " + result.rowsAffected);
+					 console.log(noOfFileSaved +": Rows inserted: " + result.rowsAffected);
 					 doRelease(connection);
 				 });
 		});
