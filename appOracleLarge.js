@@ -116,7 +116,8 @@ function GetOrderInformation(htmlBody)
     var accountNo = '';
     var subTeam = '';
     var buyer = '';
-
+	var shipToBillTo ='';
+	
     var scrapResult = [];
     $("table table").eq(0).find("tr").each(function (i, element) {
         var tdFirst = $(this).find("td").eq(0);
@@ -146,6 +147,11 @@ function GetOrderInformation(htmlBody)
         }
     });
 
+	$("table[width='50%']").eq(0).find("table[width='55%']").eq(1).find("tr").eq(1).each(function (i, element) {
+        var tdFirst = $(this).find("td").eq(0);
+		shipToBillTo = $(tdFirst).text();
+	});
+	
     var qryProducts = '';
     $("table[width='90%'] tr").each(function (i, element) {
         if (i > 0) //Header row
@@ -162,7 +168,7 @@ function GetOrderInformation(htmlBody)
 				  qryProducts += " Union all ";
 				}
 				
-				qryProducts += " Select '"+ PONumberNo +"','"+  storeNo  +"','"+  subTeam +"','"+ ItemNo +"',TO_DATE('"+  orderDate +"','YYYY-MM-dd'),'"+ qty +"' from dual";
+				qryProducts += " Select '"+ PONumberNo +"','"+  storeNo  +"','"+  subTeam +"','"+ shipToBillTo +"','"+ ItemNo  +"',TO_DATE('"+  orderDate +"','YYYY-MM-dd'),'"+ qty +"' from dual";
             }
         }
     });
@@ -190,7 +196,7 @@ function GetOrderInformation(htmlBody)
 					return;
 				}
 				
-				connection.execute("INSERT INTO orderinformation (PONo,StoreNo,SubTeam,ItemNo,OrderDate,Qty)" + qryProducts,[], {autoCommit: true},
+				connection.execute("INSERT INTO orderinformation (PONo,StoreNo,SubTeam,ShipToBillTo,ItemNo,OrderDate,Qty)" + qryProducts,[], {autoCommit: true},
 				 function (err, result) {
 					 if (err) {
 						 console.error(err.message);
