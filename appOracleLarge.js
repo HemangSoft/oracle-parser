@@ -168,7 +168,8 @@ function GetOrderInformation(htmlBody)
 				  qryProducts += " Union all ";
 				}
 				
-				qryProducts += " Select '"+ PONumberNo +"','"+  storeNo  +"','"+  subTeam +"','"+ shipToBillTo +"','"+ ItemNo  +"',TO_DATE('"+  orderDate +"','YYYY-MM-dd'),'"+ qty +"' from dual";
+				qryProducts += " Select '"+ PONumberNo +"','"+  storeNo  +"','"+  subTeam +"','"+ shipToBillTo +"','"+ ItemNo  +
+							   "',TO_DATE('"+  orderDate +"','YYYY-MM-dd'),,TO_DATE('"+  expectedDeliveryDate +"','YYYY-MM-dd') ,'"+ qty +"' from dual";
             }
         }
     });
@@ -196,7 +197,7 @@ function GetOrderInformation(htmlBody)
 					return;
 				}
 				
-				connection.execute("INSERT INTO orderinformation (PONo,StoreNo,SubTeam,ShipToBillTo,ItemNo,OrderDate,Qty)" + qryProducts,[], {autoCommit: true},
+				connection.execute("INSERT INTO orderinformation (PONo,StoreNo,SubTeam,ShipToBillTo,ItemNo,OrderDate,expectedDeliveryDate,Qty)" + qryProducts,[], {autoCommit: true},
 				 function (err, result) {
 					 if (err) {
 						 console.error(err.message);
