@@ -38,7 +38,7 @@ app.get('/',function(req,res){
 });
 
 app.get('/getAllLink/',function(req,res){
-   var url = "http://www.dorasnaturals.com/hemangtest/";
+   var url = "http://www.yourwebsite.com/hemangtest/";
    request(url, function (error, response, htmlBody) {
 	if (!error && response.statusCode == 200) {
 	    var $ = cheerio.load(htmlBody);
@@ -61,7 +61,7 @@ app.get('/getAllLink/',function(req,res){
 	}
 	else 
 	{
-		res.send("We’ve encountered an error: " + error);
+		res.send("Weâ€™ve encountered an error: " + error);
 	}
  });
 });
